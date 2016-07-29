@@ -1,5 +1,8 @@
 module Blacklight::Marc::Indexer::Formats
   module FormatMap
+
+    include  Traject::Macros::Marc21
+
     def self.map007(v, vals)
       field007hasC = false
       v = v.upcase
@@ -139,7 +142,7 @@ module Blacklight::Marc::Indexer::Formats
           vals << ((field007hasC) ? "eBook" : "Book")
         elsif f_000 == 'AS' 
           # Look in 008 to determine what type of Continuing Resource
-          formatCode = extract_marc("008[21]", first: true) do |r,a|
+          formatCode = Traject::Macros::Marc21.extract_marc("008[21]", first: true) do |r,a|
             format_code = a.upcase
             if format_code == 'N'
               vals << 'Newspaper'
